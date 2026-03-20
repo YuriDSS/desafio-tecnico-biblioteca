@@ -25,11 +25,7 @@ namespace BibliotecaApi.Application.Api.Validators.Livro
 
         private static bool TerTrezeDigitosNumericos(string isbn)
         {
-            string isbnNormalizado = Regex.Replace(isbn ?? string.Empty, @"\D", string.Empty);
-
-            bool isbnPossuiTrezeDigitos = isbnNormalizado.Length == 13;
-
-            return isbnPossuiTrezeDigitos;
+            return Regex.IsMatch(isbn ?? string.Empty, @"^\d{13}$");
         }
     }
 }
