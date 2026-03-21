@@ -3,9 +3,9 @@
 public sealed class LivroEntity
 {
     public int? Id { get; private set; }
-    public string Titulo { get; private set; }
-    public string Autor { get; private set; }
-    public string ISBN { get; private set; }
+    public string Titulo { get; private set; } = string.Empty;
+    public string Autor { get; private set; } = string.Empty;
+    public string ISBN { get; private set; } = string.Empty;
 
     public LivroEntity()
     {
