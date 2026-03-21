@@ -17,50 +17,36 @@ namespace BibliotecaApi.Application.Api.Filters
             string? authorizationHeader = context.HttpContext.Request.Headers.Authorization.FirstOrDefault();
             string? tokenConfigurado = _configuration["ApiTokenSettings:Token"];
 
-            bool headerAusente = string.IsNullOrWhiteSpace(authorizationHeader);
-            bool tokenConfiguradoAusente = string.IsNullOrWhiteSpace(tokenConfigurado);
-
-            if (headerAusente || tokenConfiguradoAusente)
+            if (string.IsNullOrWhiteSpace(authorizationHeader) || string.IsNullOrWhiteSpace(tokenConfigurado))
             {
-                context.Result = new UnauthorizedObjectResult(new
-                {
-                    sucesso = false,
-                    conteudo = (object?)null,
-                    mensagem_erro = "Token de acesso inválido."
-                });
-
+                RetornarNaoAutorizado(context);
                 return;
             }
 
             const string bearerPrefix = "Bearer ";
 
-            bool formatoInvalido = !authorizationHeader.StartsWith(bearerPrefix, StringComparison.OrdinalIgnoreCase);
-            if (formatoInvalido)
+            if (!authorizationHeader.StartsWith(bearerPrefix, StringComparison.OrdinalIgnoreCase))
             {
-                context.Result = new UnauthorizedObjectResult(new
-                {
-                    sucesso = false,
-                    conteudo = (object?)null,
-                    mensagem_erro = "Token de acesso inválido."
-                });
-
+                RetornarNaoAutorizado(context);
                 return;
             }
 
             string tokenRecebido = authorizationHeader[bearerPrefix.Length..].Trim();
 
-            bool tokenInvalido = !string.Equals(tokenRecebido, tokenConfigurado, StringComparison.Ordinal);
-            if (tokenInvalido)
+            if (!string.Equals(tokenRecebido, tokenConfigurado, StringComparison.Ordinal))
             {
-                context.Result = new UnauthorizedObjectResult(new
-                {
-                    sucesso = false,
-                    conteudo = (object?)null,
-                    mensagem_erro = "Token de acesso inválido."
-                });
-
-                return;
+                RetornarNaoAutorizado(context);
             }
+        }
+
+        private static void RetornarNaoAutorizado(AuthorizationFilterContext context)
+        {
+            context.Result = new UnauthorizedObjectResult(new
+            {
+                sucesso = false,
+                conteudo = (object?)null,
+                mensagem_erro = "Token de acesso inválido."
+            });
         }
     }
 }
