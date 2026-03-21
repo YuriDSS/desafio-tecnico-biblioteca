@@ -1,5 +1,4 @@
 ﻿using BibliotecaApi.Domain.Entities;
-using BibliotecaApi.Infrastructure.Repositories;
 using BibliotecaApi.Infrastructure.Repositories.Interfaces;
 using BibliotecaApi.UseCases.Emprestimo.DTO;
 
@@ -22,14 +21,12 @@ namespace BibliotecaApi.UseCases.Emprestimo
         {
             EmprestimoEntity? emprestimo = await _emprestimoRepository.ObterPorIdAsync(input.IdEmprestimo);
 
-            bool emprestimoInvalido = emprestimo == null;
-            if (emprestimoInvalido)
+            if (emprestimo is null)
             {
                 throw new ArgumentException("Empréstimo não encontrado.");
             }
 
-            bool devolucaoJaFoiRealizada = emprestimo.DataDevolucao.HasValue;
-            if (devolucaoJaFoiRealizada)
+            if (emprestimo.DataDevolucao.HasValue)
             {
                 throw new ArgumentException("Este empréstimo já foi devolvido.");
             }
