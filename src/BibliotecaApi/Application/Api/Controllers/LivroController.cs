@@ -2,6 +2,7 @@
 using BibliotecaApi.UseCases.Livro;
 using BibliotecaApi.UseCases.Livro.DTO;
 using Microsoft.AspNetCore.Mvc;
+using BibliotecaApi.Application.Api.Attributes;
 
 namespace BibliotecaApi.Application.Api.Controllers
 {
@@ -19,6 +20,7 @@ namespace BibliotecaApi.Application.Api.Controllers
         }
 
         [HttpPost("Cadastrar")]
+        [ApiTokenAuthorize]
         public async Task<IActionResult> Cadastrar(CadastrarLivroInputDTO input)
         {
             try

@@ -4,6 +4,7 @@ using BibliotecaApi.Infrastructure.Repositories.Interfaces;
 using BibliotecaApi.UseCases.Emprestimo;
 using BibliotecaApi.UseCases.Livro;
 using BibliotecaApi.UseCases.Usuario;
+using BibliotecaApi.Application.Api.Filters;
 
 namespace BibliotecaApi.Infrastructure.IOC
 {
@@ -14,7 +15,8 @@ namespace BibliotecaApi.Infrastructure.IOC
             services
                 .AddInfraestrutura()
                 .AddRepositorios()
-                .AddCasosDeUso();
+                .AddCasosDeUso()
+                .AddFiltros();
 
             return services;
         }
@@ -42,6 +44,13 @@ namespace BibliotecaApi.Infrastructure.IOC
             services.AddScoped<ListarLivrosUC>();
             services.AddScoped<CadastrarEmprestimoUC>();
             services.AddScoped<DevolverEmprestimoUC>();
+
+            return services;
+        }
+
+        private static IServiceCollection AddFiltros(this IServiceCollection services)
+        {
+            services.AddScoped<ApiTokenAuthorizationFilter>();
 
             return services;
         }

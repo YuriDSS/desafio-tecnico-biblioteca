@@ -1,15 +1,9 @@
 using BibliotecaApi.Infrastructure.IOC;
 using BibliotecaApi.Application.Api.Validators.Usuario;
-using BibliotecaApi.Application.Api.Validators.Livro;
-using BibliotecaApi.Application.Api.Validators.Emprestimo;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-// Ensure the SQLitePCLRaw.bundle_green package is installed in your project.
 
 var builder = WebApplication.CreateBuilder(args);
-// Initialize SQLitePCL Batteries using the correct bundle.
-
-// Add services to the container.
 
 builder.Services.AddControllers();
 
@@ -18,7 +12,6 @@ builder.Services.AddFluentValidationClientsideAdapters();
 
 builder.Services.AddValidatorsFromAssemblyContaining<CadastrarUsuarioInputDTOValidator>();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -27,17 +20,12 @@ builder.Services.AddSwaggerGen(c =>
         Title = "Biblioteca API",
         Version = "v1"
     });
-    //c.SwaggerGeneratorOptions = new()
-    //{
-    //    OpenApiVersion = Microsoft.OpenApi.OpenApiSpecVersion.OpenApi3_0
-    //};
-}); ;
+});
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -48,9 +36,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

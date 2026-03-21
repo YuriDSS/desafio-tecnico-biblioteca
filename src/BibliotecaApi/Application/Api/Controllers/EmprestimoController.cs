@@ -2,6 +2,7 @@
 using BibliotecaApi.UseCases.Emprestimo;
 using BibliotecaApi.UseCases.Emprestimo.DTO;
 using Microsoft.AspNetCore.Mvc;
+using BibliotecaApi.Application.Api.Attributes;
 
 namespace BibliotecaApi.Application.Api.Controllers
 {
@@ -19,6 +20,7 @@ namespace BibliotecaApi.Application.Api.Controllers
         }
 
         [HttpPost("Cadastrar")]
+        [ApiTokenAuthorize]
         public async Task<IActionResult> Cadastrar([FromBody] CadastrarEmprestimoInputDTO input)
         {
             try
@@ -33,6 +35,7 @@ namespace BibliotecaApi.Application.Api.Controllers
         }
 
         [HttpPost("Devolver")]
+        [ApiTokenAuthorize]
         public async Task<IActionResult> Devolver([FromBody] DevolverEmprestimoInputDTO input)
         {
             try
