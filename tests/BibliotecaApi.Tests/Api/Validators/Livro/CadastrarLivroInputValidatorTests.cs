@@ -3,7 +3,7 @@ using BibliotecaApi.Application.Api.Validators.Livro;
 using FluentValidation.Results;
 using BibliotecaApi.UseCases.Livro.DTO;
 
-namespace BibliotecaApi.Tests.UseCases.Livro.Validators
+namespace BibliotecaApi.Tests.Api.Validators.Livros
 {
     public class CadastrarLivroInputValidatorTests
     {
