@@ -8,5 +8,6 @@ namespace BibliotecaApi.Infrastructure.Repositories.Interfaces
         Task Atualizar(EmprestimoEntity emprestimo);
         Task<EmprestimoEntity?> ObterPorIdAsync(int idEmprestimo);
         Task<bool> LivroEstaEmprestadoAsync(int idLivro);
+        Task<bool> UsuarioPossuiEmprestimoEmAtrasoAsync(int idUsuario);
     }
 }

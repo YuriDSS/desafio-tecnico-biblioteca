@@ -4,6 +4,9 @@
     <File Path=".gitignore" />
     <File Path="README.md" />
   </Folder>
+  <Folder Name="/scripts/">
+    <File Path="Script_para_adicionar_campo_possui_atraso_ativo_tabela_usuarios.sql" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/BibliotecaApi/BibliotecaApi.csproj" />
   </Folder>

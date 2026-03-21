@@ -1,0 +1,1 @@
+ALTER TABLE Usuarios ADD COLUMN possui_atraso_ativo INTEGER NOT NULL DEFAULT 0;

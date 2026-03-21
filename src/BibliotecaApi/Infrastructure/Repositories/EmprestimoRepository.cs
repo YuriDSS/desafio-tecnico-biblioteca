@@ -96,5 +96,24 @@ namespace BibliotecaApi.Infrastructure.Repositories
 
             return quantidade > 0;
         }
+
+        public async Task<bool> UsuarioPossuiEmprestimoEmAtrasoAsync(int idUsuario)
+        {
+            string sql = @"
+                         SELECT COUNT(1)
+                         FROM Emprestimos
+                         WHERE id_usuario = @IdUsuario
+                           AND data_devolucao IS NULL
+                           AND data_prevista_devolucao < @DataAtual
+                         ";
+
+            int quantidade = await _session.Connection.ExecuteScalarAsync<int>(sql, new
+            {
+                IdUsuario = idUsuario,
+                DataAtual = DateTime.Now
+            });
+
+            return quantidade > 0;
+        }
     }
 }

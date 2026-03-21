@@ -1,4 +1,5 @@
 ﻿using BibliotecaApi.Domain.Entities;
+using BibliotecaApi.Infrastructure.Repositories;
 using BibliotecaApi.Infrastructure.Repositories.Interfaces;
 using BibliotecaApi.UseCases.Emprestimo.DTO;
 
@@ -8,15 +9,26 @@ namespace BibliotecaApi.UseCases.Emprestimo
     {
         private readonly IEmprestimoRepository _emprestimoRepository;
         private readonly ILivroRepository _livroRepository;
+        private readonly IUsuarioRepository _usuarioRepository;
 
-        public CadastrarEmprestimoUC(IEmprestimoRepository emprestimoRepository, ILivroRepository livroRepository)
+        public CadastrarEmprestimoUC(IEmprestimoRepository emprestimoRepository, ILivroRepository livroRepository, IUsuarioRepository usuarioRepository)
         {
             _emprestimoRepository = emprestimoRepository;
             _livroRepository = livroRepository;
+            _usuarioRepository = usuarioRepository;
         }
 
         public async Task<int> Executar(CadastrarEmprestimoInputDTO input)
         {
+            bool usuarioPossuiEmprestimoEmAtraso = await _emprestimoRepository.UsuarioPossuiEmprestimoEmAtrasoAsync(input.IdUsuario);
+
+            await _usuarioRepository.AtualizarPossuiAtrasoAtivoAsync(input.IdUsuario, usuarioPossuiEmprestimoEmAtraso);
+
+            if (usuarioPossuiEmprestimoEmAtraso)
+            {
+                throw new ArgumentException("Usuário com empréstimo em atraso não pode realizar novo empréstimo.");
+            }
+
             bool livroJaEstaEmprestado = await _emprestimoRepository.LivroEstaEmprestadoAsync(input.IdLivro);
             if (livroJaEstaEmprestado)
             {

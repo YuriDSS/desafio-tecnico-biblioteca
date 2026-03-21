@@ -1,4 +1,5 @@
 ﻿using BibliotecaApi.Domain.Entities;
+using BibliotecaApi.Infrastructure.Repositories;
 using BibliotecaApi.Infrastructure.Repositories.Interfaces;
 using BibliotecaApi.UseCases.Emprestimo.DTO;
 
@@ -8,11 +9,13 @@ namespace BibliotecaApi.UseCases.Emprestimo
     {
         private readonly IEmprestimoRepository _emprestimoRepository;
         private readonly ILivroRepository _livroRepository;
+        private readonly IUsuarioRepository _usuarioRepository;
 
-        public DevolverEmprestimoUC(IEmprestimoRepository emprestimoRepository, ILivroRepository livroRepository)
+        public DevolverEmprestimoUC(IEmprestimoRepository emprestimoRepository, ILivroRepository livroRepository, IUsuarioRepository usuarioRepository)
         {
             _emprestimoRepository = emprestimoRepository;
             _livroRepository = livroRepository;
+            _usuarioRepository = usuarioRepository;
         }
 
         public async Task<int> Executar(DevolverEmprestimoInputDTO input)
@@ -35,6 +38,9 @@ namespace BibliotecaApi.UseCases.Emprestimo
 
             await _emprestimoRepository.Atualizar(emprestimo);
             await _livroRepository.MarcarComoDisponivel(emprestimo.IdLivro);
+
+            bool usuarioAindaPossuiEmprestimoEmAtraso = await _emprestimoRepository.UsuarioPossuiEmprestimoEmAtrasoAsync(emprestimo.IdUsuario);
+            await _usuarioRepository.AtualizarPossuiAtrasoAtivoAsync(emprestimo.IdUsuario, usuarioAindaPossuiEmprestimoEmAtraso);
 
             return emprestimo.Id;
         }

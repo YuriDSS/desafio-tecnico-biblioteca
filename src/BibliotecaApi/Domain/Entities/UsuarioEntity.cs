@@ -8,6 +8,7 @@ namespace BibliotecaApi.Domain.Entities
         public string Nome { get; private set; }
         public string CPF { get; private set; }
         public string Email { get; private set; }
+        public bool PossuiAtrasoAtivo { get; private set; }
 
         public void Cadastrar(string nome, string cpf, string email)
         {
@@ -35,6 +36,12 @@ namespace BibliotecaApi.Domain.Entities
             Nome = nome.Trim();
             CPF = cpfNormalizado;
             Email = email.Trim();
+            PossuiAtrasoAtivo = false;
         }
+        public void AtualizarPossuiAtrasoAtivo(bool possuiAtrasoAtivo)
+        {
+            PossuiAtrasoAtivo = possuiAtrasoAtivo;
+        }
+
     }
 }

@@ -49,5 +49,20 @@ namespace BibliotecaApi.Infrastructure.Repositories
 
             return cpfJaCadastrado;
         }
+
+        public async Task AtualizarPossuiAtrasoAtivoAsync(int idUsuario, bool possuiAtrasoAtivo)
+        {
+            string sql = @"
+                         UPDATE Usuarios
+                         SET possui_atraso_ativo = @PossuiAtrasoAtivo
+                         WHERE id = @IdUsuario
+                         ";
+
+            await _session.Connection.ExecuteAsync(sql, new
+            {
+                IdUsuario = idUsuario,
+                PossuiAtrasoAtivo = possuiAtrasoAtivo ? 1 : 0
+            });
+        }
     }
 }
