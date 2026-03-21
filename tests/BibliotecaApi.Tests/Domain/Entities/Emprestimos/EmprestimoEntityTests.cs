@@ -39,7 +39,7 @@ namespace BibliotecaApi.Tests.Domain.Entities.Emprestimos
         }
 
         [Fact]
-        public void RegistrarDevolucao_QuandoDevolvidoComAtraso_DeveGerarMultaCorreta()
+        public void RegistrarDevolucao_QuandoDevolvidoComDoisDiasDeAtraso_DeveGerarMultaCorreta()
         {
             EmprestimoEntity emprestimo = new();
             DateTime dataPrevista = DateTime.Now.AddDays(3);
@@ -52,6 +52,40 @@ namespace BibliotecaApi.Tests.Domain.Entities.Emprestimos
 
             Assert.Equal(4.00m, emprestimo.Multa);
             Assert.Equal(9.00m, emprestimo.Total);
+            Assert.Equal(dataDevolucao, emprestimo.DataDevolucao);
+        }
+
+        [Fact]
+        public void RegistrarDevolucao_QuandoDevolvidoComCincoDiasDeAtraso_DeveGerarMultaCorreta()
+        {
+            EmprestimoEntity emprestimo = new();
+            DateTime dataPrevista = DateTime.Now.AddDays(3);
+
+            emprestimo.Cadastrar(idUsuario: 1, idLivro: 1, dataPrevista: dataPrevista);
+
+            DateTime dataDevolucao = dataPrevista.AddDays(5);
+
+            emprestimo.RegistrarDevolucao(dataDevolucao);
+
+            Assert.Equal(13.00m, emprestimo.Multa);
+            Assert.Equal(18.00m, emprestimo.Total);
+            Assert.Equal(dataDevolucao, emprestimo.DataDevolucao);
+        }
+
+        [Fact]
+        public void RegistrarDevolucao_QuandoDevolvidoComVinteDiasDeAtraso_DeveLimitarMultaEmCinquentaReais()
+        {
+            EmprestimoEntity emprestimo = new();
+            DateTime dataPrevista = DateTime.Now.AddDays(3);
+
+            emprestimo.Cadastrar(idUsuario: 1, idLivro: 1, dataPrevista: dataPrevista);
+
+            DateTime dataDevolucao = dataPrevista.AddDays(20);
+
+            emprestimo.RegistrarDevolucao(dataDevolucao);
+
+            Assert.Equal(50.00m, emprestimo.Multa);
+            Assert.Equal(55.00m, emprestimo.Total);
             Assert.Equal(dataDevolucao, emprestimo.DataDevolucao);
         }
     }

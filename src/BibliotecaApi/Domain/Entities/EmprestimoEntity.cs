@@ -57,13 +57,15 @@ public class EmprestimoEntity
             throw new Exception("Empréstimo ainda não devolvido.");
         }
 
-        bool devolucaoAntesDoPrazo = DataDevolucao.Value <= DataPrevistaDevolucao;
-        if (devolucaoAntesDoPrazo)
+        DateTime dataDevolucao = DataDevolucao.Value;
+
+        bool devolucaoNoPrazoOuAntes = dataDevolucao <= DataPrevistaDevolucao;
+        if (devolucaoNoPrazoOuAntes)
         {
             return 0m;
         }
 
-        int diasAtraso = (DataDevolucao.Value.Date - DataPrevistaDevolucao.Date).Days;
+        int diasAtraso = (dataDevolucao.Date - DataPrevistaDevolucao.Date).Days;
 
         bool devolucaoSemAtraso = diasAtraso <= 0;
         if (devolucaoSemAtraso)
@@ -71,6 +73,24 @@ public class EmprestimoEntity
             return 0m;
         }
 
-        return diasAtraso * 2.00m;
+        decimal multa = 0m;
+
+        int diasPrimeiraFaixa = Math.Min(diasAtraso, 3);
+        multa += diasPrimeiraFaixa * 2.00m;
+
+        if (diasAtraso > 3)
+        {
+            int diasSegundaFaixa = diasAtraso - 3;
+            multa += diasSegundaFaixa * 3.50m;
+        }
+
+        decimal limiteMaximo = 50.00m;
+
+        if (multa > limiteMaximo)
+        {
+            multa = limiteMaximo;
+        }
+
+        return multa;
     }
 }
