@@ -51,8 +51,7 @@ public class EmprestimoEntity
 
     private decimal CalcularMulta()
     {
-        bool dataDevolucaoInvalida = DataDevolucao == null;
-        if (dataDevolucaoInvalida)
+        if (DataDevolucao is null)
         {
             throw new Exception("Empréstimo ainda não devolvido.");
         }
