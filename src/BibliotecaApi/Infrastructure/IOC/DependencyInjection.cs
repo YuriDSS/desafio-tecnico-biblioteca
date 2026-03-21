@@ -39,6 +39,7 @@ namespace BibliotecaApi.Infrastructure.IOC
         {
             services.AddScoped<CadastrarUsuarioUC>();
             services.AddScoped<CadastrarLivroUC>();
+            services.AddScoped<ListarLivrosUC>();
             services.AddScoped<CadastrarEmprestimoUC>();
             services.AddScoped<DevolverEmprestimoUC>();
 

@@ -1,6 +1,7 @@
 ﻿using BibliotecaApi.Domain.Entities;
 using BibliotecaApi.Infrastructure.Data;
 using BibliotecaApi.Infrastructure.Repositories.Interfaces;
+using BibliotecaApi.UseCases.Livro.DTO;
 using Dapper;
 
 namespace BibliotecaApi.Infrastructure.Repositories
@@ -42,6 +43,22 @@ namespace BibliotecaApi.Infrastructure.Repositories
         {
             var sql = "UPDATE Livros SET disponivel = 1 WHERE id = @IdLivro";
             await _session.Connection.ExecuteAsync(sql, new { IdLivro = idLivro });
+        }
+
+        public async Task<List<ListarLivrosOutputDTO>> ListarAsync()
+        {
+            string sql = @"
+                         SELECT
+                             id AS Id,
+                             titulo AS Titulo,
+                             autor AS Autor,
+                             isbn AS ISBN
+                         FROM Livros
+                     ";
+
+            IEnumerable<ListarLivrosOutputDTO> livros = await _session.Connection.QueryAsync<ListarLivrosOutputDTO>(sql);
+
+            return livros.ToList();
         }
     }
 }
