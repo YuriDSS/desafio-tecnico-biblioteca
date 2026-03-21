@@ -79,5 +79,22 @@ namespace BibliotecaApi.Infrastructure.Repositories
                 sql,
                 new { IdEmprestimo = idEmprestimo });
         }
+
+        public async Task<bool> LivroEstaEmprestadoAsync(int idLivro)
+        {
+            string sql = @"
+                        SELECT COUNT(1)
+                        FROM Emprestimos
+                        WHERE id_livro = @IdLivro
+                          AND data_devolucao IS NULL
+                        ";
+
+            int quantidade = await _session.Connection.ExecuteScalarAsync<int>(sql, new
+            {
+                IdLivro = idLivro
+            });
+
+            return quantidade > 0;
+        }
     }
 }

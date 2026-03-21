@@ -17,6 +17,12 @@ namespace BibliotecaApi.UseCases.Emprestimo
 
         public async Task<int> Executar(CadastrarEmprestimoInputDTO input)
         {
+            bool livroJaEstaEmprestado = await _emprestimoRepository.LivroEstaEmprestadoAsync(input.IdLivro);
+            if (livroJaEstaEmprestado)
+            {
+                throw new ArgumentException("Este livro já está emprestado e ainda não foi devolvido.");
+            }
+
             EmprestimoEntity emprestimo = new();
 
             emprestimo.Cadastrar(input.IdUsuario, input.IdLivro, input.DataPrevistaDevolucao);
