@@ -83,68 +83,28 @@ A solução foi organizada em uma arquitetura **monolítica em camadas**, manten
 
 ---
 
-## Como executar localmente
+## Como executar o projeto
 
 ### Pré-requisitos
 
-- **.NET SDK 8.0** ou superior
-- Visual Studio 2022 / VS Code / Rider (opcional)
+Para executar o projeto, é necessário ter instalado na máquina:
 
-### 1. Restaurar dependências
+- **Docker Desktop** (Windows/Mac), ou
+- **Docker Engine + Docker Compose v2** (Linux)
 
-```bash
-dotnet restore
-```
+> **Observação:** não é necessário instalar o **.NET SDK** localmente para executar a aplicação.
 
-### 2. Compilar a solução
+### Subir a aplicação com Docker Compose
 
-```bash
-dotnet build
-```
-
-### 3. Executar os testes
+Na raiz do projeto, execute:
 
 ```bash
-dotnet test
+docker compose up --build
 ```
 
-### 4. Executar a API
+### Acessar a aplicação
 
-```bash
-dotnet run --project ./src/BibliotecaApi/BibliotecaApi.csproj
-```
-
-### 5. Acessar o Swagger
-
-Em ambiente local, a porta pode variar conforme o `launchSettings.json` do projeto.
-
-Após subir a API, acesse:
-
-- `http://localhost:<porta>/swagger`
-- ou
-- `https://localhost:<porta>/swagger`
-
-> **Observação:** o Swagger está habilitado apenas em ambiente **Development**.
-
----
-
-## Como executar com Docker
-
-O projeto já está preparado para execução em container, incluindo o arquivo do banco SQLite no build da imagem.
-
-### 1. Build da imagem
-
-```bash
-docker build -t biblioteca-api .
-```
-
-### 2. Executar o container
-
-```bash
-docker run -d -p 8080:8080 --name biblioteca-api biblioteca-api
-```
-
-### 3. Acessar a aplicação
+Após a inicialização:
 
 - API: `http://localhost:8080`
 - Swagger: `http://localhost:8080/swagger`
@@ -153,38 +113,14 @@ docker run -d -p 8080:8080 --name biblioteca-api biblioteca-api
 
 ---
 
-## Como executar com Docker Compose
-
-Também é possível executar a API via `docker-compose`.
-
-### Subir o container
-
-```bash
-docker compose up --build
-```
-
-### Acessar a aplicação
-
-- API: `http://localhost:8080`
-- Swagger: `http://localhost:8080/swagger`
-
----
-
 ## Banco de dados
 
-O projeto utiliza **SQLite** com o arquivo de banco já incluído no repositório:
+O projeto utiliza **SQLite** e o arquivo do banco já está incluído no repositório.
 
-- `src/BibliotecaApi/Biblioteca.db`
+- O arquivo `src/BibliotecaApi/Biblioteca.db` já acompanha o projeto
+- **Não é necessário criar banco, rodar migrations ou executar scripts SQL para subir a aplicação**
 
-A connection string está configurada em:
-
-- `src/BibliotecaApi/appsettings.json`
-
-```json
-"ConnectionStrings": {
-  "Database": "Data Source = Biblioteca.db"
-}
-```
+> O arquivo `Script_para_adicionar_campo_possui_atraso_ativo_tabela_usuarios.sql` foi mantido apenas como **registro da alteração estrutural** realizada durante o desafio técnico, não sendo necessário para execução da aplicação.
 
 ### Observação importante
 
