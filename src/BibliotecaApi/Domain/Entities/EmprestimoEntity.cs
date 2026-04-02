@@ -57,12 +57,6 @@ public class EmprestimoEntity
             throw new Exception("A data de devolução não pode ser anterior à data do empréstimo.");
         }
 
-        bool bloquearDevolucaoDataFutura = dataEfetivaDevolucao > DateTime.Now;
-        if (bloquearDevolucaoDataFutura)
-        {
-            throw new Exception("A data de devolução não pode ser futura.");
-        }
-
         DataDevolucao = dataEfetivaDevolucao;
         Multa = CalcularMulta();
         Total = Valor + Multa;

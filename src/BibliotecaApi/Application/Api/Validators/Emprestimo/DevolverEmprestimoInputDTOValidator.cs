@@ -13,9 +13,7 @@ namespace BibliotecaApi.Application.Api.Validators.Emprestimo
 
             RuleFor(x => x.DataDevolucao)
                 .NotEmpty()
-                .WithMessage("Data de devolução é obrigatória.")
-                .LessThanOrEqualTo(DateTime.Now)
-                .WithMessage("A data de devolução não pode ser futura.");
+                .WithMessage("Data de devolução é obrigatória.");
         }
     }
 }

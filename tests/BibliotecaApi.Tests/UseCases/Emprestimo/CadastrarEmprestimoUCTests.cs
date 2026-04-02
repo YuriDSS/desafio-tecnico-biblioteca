@@ -189,9 +189,9 @@ namespace BibliotecaApi.Tests.UseCases.Emprestimo
                 IdEmprestimo = 1
             };
 
-            int idEmprestimo = await useCase.Executar(input);
+            DevolverEmprestimoOutputDTO devolverEmprestimoOutputDTO = await useCase.Executar(input);
 
-            Assert.Equal(emprestimo.Id, idEmprestimo);
+            Assert.Equal(emprestimo.Id, devolverEmprestimoOutputDTO.Id);
 
             usuarioRepositoryMock.Verify(x => x.AtualizarPossuiAtrasoAtivoAsync(emprestimo.IdUsuario, false), Times.Once);
             emprestimoRepositoryMock.Verify(x => x.Atualizar(It.IsAny<EmprestimoEntity>()), Times.Once);
