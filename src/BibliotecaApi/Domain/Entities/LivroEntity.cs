@@ -9,17 +9,18 @@ public sealed class LivroEntity
 
     public LivroEntity()
     {
-        
+
     }
     public LivroEntity(int? id, string titulo, string autor, string isbn)
     {
-        if (id != null)
+        if (id.HasValue)
         {
-            if(string.IsNullOrEmpty(id.ToString()))
-                throw new ArgumentException("Id não pode ser vazio.");
-            if (id <= 0)
+            if (id.Value <= 0)
+            {
                 throw new ArgumentException("Id deve ser maior que zero.");
-            Id = id.GetValueOrDefault();
+            }
+
+            Id = id.Value;
         }
 
         ValidarDados(titulo, autor, isbn);
@@ -29,10 +30,10 @@ public sealed class LivroEntity
         ISBN = isbn;
     }
 
-    public void Cadastrar( string titulo, string autor, string isbn)
+    public void Cadastrar(string titulo, string autor, string isbn)
     {
-        
-        ValidarDados(titulo, autor, isbn); 
+
+        ValidarDados(titulo, autor, isbn);
 
         Titulo = titulo;
         Autor = autor;
@@ -41,15 +42,28 @@ public sealed class LivroEntity
 
     private void ValidarDados(string titulo, string autor, string isbn)
     {
-        if (string.IsNullOrWhiteSpace(titulo))
+        bool tituloVazio = string.IsNullOrWhiteSpace(titulo);
+        if (tituloVazio)
+        {
             throw new ArgumentException("Título não pode ser vazio.");
-        if (string.IsNullOrWhiteSpace(autor))
+        }
+
+        bool autorVazio = string.IsNullOrWhiteSpace(autor);
+        if (autorVazio)
+        {
             throw new ArgumentException("Autor não pode ser vazio.");
-        if (string.IsNullOrWhiteSpace(isbn))
+        }
+
+        bool isbnVazio = string.IsNullOrWhiteSpace(isbn);
+        if (isbnVazio)
+        {
             throw new ArgumentException("ISBN não pode ser vazio.");
-        if(isbn.Any(c => !char.IsDigit(c)))
-            throw new ArgumentException("ISBN deve conter apenas números.");
+        }
+
+        bool isbnNaoPossuiTrezeDigitos = isbn.Length != 13 || isbn.Any(c => !char.IsDigit(c));
+        if (isbnNaoPossuiTrezeDigitos)
+        {
+            throw new ArgumentException("ISBN deve conter exatamente 13 dígitos numéricos.");
+        }
     }
-
-
 }
