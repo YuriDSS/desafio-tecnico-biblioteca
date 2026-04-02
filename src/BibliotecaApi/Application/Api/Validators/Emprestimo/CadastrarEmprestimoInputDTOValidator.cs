@@ -16,8 +16,9 @@ namespace BibliotecaApi.Application.Api.Validators.Emprestimo
                 .WithMessage("IdLivro deve ser maior que zero.");
 
             RuleFor(x => x.DataPrevistaDevolucao)
-                .NotEmpty()
-                .WithMessage("Data prevista de devolução é obrigatória.");
+                .NotEmpty().WithMessage("A data prevista de devolução é obrigatória.")
+                .Must(data => data.Date > DateTime.Now.Date)
+                .WithMessage("A data prevista de devolução deve ser uma data futura.");
         }
     }
 }
