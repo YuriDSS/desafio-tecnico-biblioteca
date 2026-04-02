@@ -40,8 +40,8 @@ namespace BibliotecaApi.Application.Api.Controllers
         {
             try
             {
-                int idEmprestimo = await _devolverEmprestimoUC.Executar(input);
-                return Ok(ApiResponse<int>.Ok(idEmprestimo));
+                DevolverEmprestimoOutputDTO outputDTO = await _devolverEmprestimoUC.Executar(input);
+                return Ok(ApiResponse<DevolverEmprestimoOutputDTO>.Ok(outputDTO));
             }
             catch (Exception ex)
             {
