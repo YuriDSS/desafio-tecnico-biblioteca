@@ -31,7 +31,7 @@ namespace BibliotecaApi.UseCases.Emprestimo
                 throw new ArgumentException("Este empréstimo já foi devolvido.");
             }
 
-            emprestimo.RegistrarDevolucao();
+            emprestimo.RegistrarDevolucao(input.DataDevolucao);
 
             await _emprestimoRepository.Atualizar(emprestimo);
             await _livroRepository.MarcarComoDisponivel(emprestimo.IdLivro);

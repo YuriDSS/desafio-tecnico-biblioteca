@@ -44,7 +44,26 @@ public class EmprestimoEntity
 
     public void RegistrarDevolucao(DateTime? dataDevolucao = null)
     {
-        DataDevolucao = dataDevolucao ?? DateTime.Now;
+        bool emprestimoJaFoiDevolvido = DataDevolucao.HasValue;
+        if (emprestimoJaFoiDevolvido)
+        {
+            throw new Exception("Este empréstimo já foi devolvido.");
+        }
+
+        DateTime dataEfetivaDevolucao = dataDevolucao ?? DateTime.Now;
+
+        if (dataEfetivaDevolucao < DataEmprestimo)
+        {
+            throw new Exception("A data de devolução não pode ser anterior à data do empréstimo.");
+        }
+
+        bool bloquearDevolucaoDataFutura = dataEfetivaDevolucao > DateTime.Now;
+        if (bloquearDevolucaoDataFutura)
+        {
+            throw new Exception("A data de devolução não pode ser futura.");
+        }
+
+        DataDevolucao = dataEfetivaDevolucao;
         Multa = CalcularMulta();
         Total = Valor + Multa;
     }
