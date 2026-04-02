@@ -17,7 +17,7 @@ namespace BibliotecaApi.UseCases.Emprestimo
             _usuarioRepository = usuarioRepository;
         }
 
-        public async Task<int> Executar(DevolverEmprestimoInputDTO input)
+        public async Task<DevolverEmprestimoOutputDTO> Executar(DevolverEmprestimoInputDTO input)
         {
             EmprestimoEntity? emprestimo = await _emprestimoRepository.ObterPorIdAsync(input.IdEmprestimo);
 
@@ -39,7 +39,13 @@ namespace BibliotecaApi.UseCases.Emprestimo
             bool usuarioAindaPossuiEmprestimoEmAtraso = await _emprestimoRepository.UsuarioPossuiEmprestimoEmAtrasoAsync(emprestimo.IdUsuario);
             await _usuarioRepository.AtualizarPossuiAtrasoAtivoAsync(emprestimo.IdUsuario, usuarioAindaPossuiEmprestimoEmAtraso);
 
-            return emprestimo.Id;
+            return new DevolverEmprestimoOutputDTO
+            {
+                Id = emprestimo.Id,
+                DataDevolucao = emprestimo.DataDevolucao ?? input.DataDevolucao,
+                Multa = emprestimo.Multa,
+                Mensagem = "Empréstimo devolvido com sucesso."
+            };
         }
     }
 }
